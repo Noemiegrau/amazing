@@ -1,0 +1,150 @@
+# Mazegen
+
+*This project has been created as part of the 42 curriculum by nograu and jerecaba.*
+
+---
+
+## Description
+
+**Mazegen** is a Python package that provides a reusable maze generation module.
+It allows you to:
+
+- Generate mazes of any size
+- Define entry and exit points
+- Ensure reproducible mazes using a seed
+- Access the internal grid representation
+- Find the shortest path from entry to exit
+- Apply custom patterns (like the "42" pattern for the Amazing project)
+
+The package is designed to be fully reusable in other Python projects and **has no external dependencies**.
+
+---
+
+## Installation
+
+Build the package (if not already done):
+
+```bash
+cd mazegen/
+pip install build
+python -m build
+```
+
+Install the package in a clean environment:
+
+```bash
+python -m venv test_env
+source test_env/bin/activate   # Linux/Mac
+pip install dist/mazegen-0.1.0-py3-none-any.whl
+```
+
+---
+
+## Usage
+
+### Import and instantiate a maze
+
+```python
+from mazegen import Maze
+
+# Create a maze of width 10, height 10, with entry at (0,0) and exit at (9,9)
+m = Maze(width=10, height=10, entry=(0, 0), exit=(9, 9))
+```
+
+### Generate the maze
+
+```python
+# Generate a maze using a seed for reproducibility
+m.generate(seed=42)
+```
+
+### Access the maze
+
+```python
+# Print the maze in a readable hexadecimal format
+print(m.to_hex())
+
+# Access the internal grid representation (2D list)
+grid = m.grid
+
+# Check if a cell has a wall in a certain direction
+if m.has_wall(0, 0, 1):  # 1 = North
+    print('North wall exists')
+```
+
+### Moving inside the maze
+
+```python
+# Check if movement is possible in a given direction
+if m.can_move(0, 0, 2):  # 2 = East
+    print('Can move East from (0,0)')
+```
+
+### Finding the shortest path (solution)
+
+```python
+# Get the shortest path from entry to exit
+path = m.solve()
+if path:
+    print(path)  # e.g. 'SSEEENNSSEE...'
+```
+
+### Opening and closing walls manually
+
+```python
+# Open a wall between (x, y) and its neighbor in the specified direction
+m.open_wall(0, 0, 2)  # Open east wall of (0,0)
+
+# Close a wall
+m.close_wall(0, 0, 2)
+```
+
+---
+
+## Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `width` | `int` | Number of columns in the maze |
+| `height` | `int` | Number of rows in the maze |
+| `entry` | `tuple[int, int]` | Coordinates of the entry cell (x, y) |
+| `exit` | `tuple[int, int]` | Coordinates of the exit cell (x, y) |
+| `seed` | `int` | Random seed to generate reproducible mazes |
+
+---
+
+## Wall encoding
+
+The maze grid uses a hexadecimal bitmask for walls:
+each cell stores a number where each bit represents a wall
+(North=1, East=2, South=4, West=8).
+
+---
+
+## Full example
+
+```python
+from mazegen import Maze
+
+# Create and generate maze
+m = Maze(8, 8, (0, 0), (7, 7))
+m.generate(seed=1234)
+
+# Print hex representation
+print(m.to_hex())
+
+# Find shortest path
+path = m.solve()
+print('Solution:', path)
+
+# Inspect neighbors of the top-left cell
+print('Neighbors:', m.get_neighbors(0, 0))
+```
+
+---
+
+## Notes
+
+- This package is fully reusable in any Python project.
+- It does not depend on any external Python libraries.
+- It can be installed via pip from the `.whl` or `.tar.gz` file.

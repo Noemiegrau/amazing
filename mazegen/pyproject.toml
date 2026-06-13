@@ -1,0 +1,20 @@
+[project]
+name = "mazegen"
+version = "0.1.0"
+description = "Maze generator package for 42 project"
+authors = [
+    {name = "jeremycaballe",email = "jeremykeysonn@hotmail.com"},
+    {name = "noemiegrau",email = "noemiegrau@outlook.fr"}
+]
+readme = "README.md"
+requires-python = ">=3.10"
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
